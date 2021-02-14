@@ -4,7 +4,7 @@ from flask_restful import Resource, Api, abort, request
 app = Flask(__name__)
 api = Api(app)
 
-# Create app and api
+# Simulates database
 books = {
     '1': {
         'isbn': '744586',
@@ -25,7 +25,21 @@ def abort_if_book_doesnot_exits(book_id):
     abort(404, message='El libro con id {} no existe'.format(book_id))
 
 
+def login_required(func):
+    def wrapper(self):
+        if request.authorization \
+            and request.authorization['username'] == 'rusbel' \
+            and request.authorization['password'] == 'pass':
+            return func(self)
+        
+        return make_response('Could not verify your login!', 401, {'WWW-Authencticate': 'Basic realm="Login Required"'})
+
+    return wrapper
+
+
+
 class BooksList(Resource):
+    @login_required
     def get(self):
         # Returns as json in data variables
         return jsonify({'data': books})  
