@@ -28,6 +28,16 @@ class BooksList(Resource):
     def get(self):
         return jsonify({'data': books})  # Returns as json in data variables
 
+    def post(self):
+        # Get the request as json format
+        json = request.get_json(force=True)
+        # Create Index to post the new book
+        index = len(books) + 1
+        # Save the new book in the database
+        books.update( {'{}'.format(index): json })
+        # Return feedback to user
+        return 'Libro agregado correctamente con ID: ' + str(index)
+
 
 # Returns an specific id book
 class Book(Resource):
