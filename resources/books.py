@@ -1,7 +1,7 @@
 from flask import jsonify, make_response, request
 from flask_restful import Resource, abort
 from common.db_service import books
-from common.auth import login_required
+from common.auth import login_required, auth_required
 # import ast
 
 
@@ -10,7 +10,7 @@ def abort_if_book_doesnot_exits(book_id):
 
 
 class BooksList(Resource):
-    @login_required
+    @auth_required
     def get(self):
         # Returns as json in data variables
         return jsonify({'data': books})  
