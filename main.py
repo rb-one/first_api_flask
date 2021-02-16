@@ -4,9 +4,13 @@ from resources.books import Book, BooksList
 from resources.authors import Authors
 from resources.genres import Generes
 from common.auth import generate_hash
+from flask_cors import CORS
+
 
 app = Flask(__name__)
 api = Api(app)
+CORS(app)
+
 
 api.add_resource(BooksList, '/books')
 api.add_resource(Book, '/book/<book_id>')

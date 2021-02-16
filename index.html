@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- <script async src='/cdn-cgi/bm/cv/669835187/api.js'></script> -->
+</head>
+
+<body>
+    <table id="booksTable" class="table">
+        <thead>
+            <tr>
+                <th>ISBN</th>
+                <th>Title</th>
+                <th>Author ID</th>
+                <th>Genre ID</th>
+            </tr>
+        </thead>
+    </table>
+    <!-- Body of table -->
+    <tbody>
+        <!-- this would be generated dinamically with API data-->
+    </tbody>
+    <!-- load books button -->
+    <input type="button" value="Cargar libros" id="loadBooks" />
+    <div style="display: none;" id="messages">
+        <p></p>
+    </div>
+    <!-- Form for adding a new book -->
+    <div style="display: inline; " id="bookForm">
+        <hr />
+        <table>
+            <tr>
+                <td>ISBN:</td>
+                <td><input type="text" name="bookIsbn" id="bookIsbn"></td>
+            </tr>
+            <tr>
+                <td>Titulo:</td>
+                <td><input type="text" name="bookTitle" id="bookTitle"></td>
+            </tr>
+            <tr>
+                <td>Author ID:</td>
+                <td><input type="number" name="bookAuthorId" id="bookAuthorId" min="1"></td>
+            </tr>
+            <tr>
+                <td>Genre ID:</td>
+                <td><input type="number" name="bookGenreId" id="bookGenreId" min="1"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="button" value="Guardar" id="bookSave" /></td>
+            </tr>
+        </table>
+    </div>
+    <!-- script for bootstrap -->
+    <!-- <script type="text/javascript">(
+            function () { window['__CF$cv$params'] = { 
+                r: '62216f1bfefa7f7c', 
+                m: 'db2362da68b83d359368e0d41fc43216014fe30b-1613417328-1800-ASBYUGo6uo/lYFZ6IdMpnvYrqBaeEXv9WgdoAEhj33mTM8XjOLDZEUEeaEC1+MQAIQ1nKuUWsf5m2nD8NYZ73qjSubPkNqb3kxgOiHx/Ydab6bY1150+M54SQ4GgOZaR+yhZ/Ro0LUKC6B/eEi0G4aNTdcsP4npqvc7yjrzWceXQbjQY+F0VeSHhKTvklBMYAwZ88mDqJ8NrfCObVOedSAk=', 
+                s: [0xc619a956f6, 0x95beae32d2], 
+            } 
+        })();
+    </script> -->
+</body>
+<!-- Bootstrap -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+    crossorigin="anonymous">
+</script>
+<!-- Scripts for control -->
+<script type="text/javascript">
+    // boton cargar libros
+    $('#loadBooks').click(function () {
+        $('#messages').first('p').text('Cargando libros...');
+        $('#messages').show();
+        $.ajax({
+            'url': 'http://127.0.0.1:5000/books',
+            'success': function (data) {
+                $('#messages').show();
+                $('#booksTable > tbody').empty();
+                Object.keys(data.data).forEach(key => {
+                    let book = data.data[key]
+                    addBook(book)
+                })
+                $('#bookForm').show();
+            }
+        });
+    });
+
+
+    function addBook(book) {
+        console.log(book)
+        $('#booksTable tr:last').after('<tr><td>' + book.isbn + '</td><td>' + book.title + '</td><td>' + book.author_id + '</td><td>' + book.genre_id + '</td></tr>');
+    }
+
+  
+</script>
+
+</html>

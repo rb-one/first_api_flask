@@ -10,7 +10,7 @@ def abort_if_book_doesnot_exits(book_id):
 
 
 class BooksList(Resource):
-    @auth_required
+    # @auth_required
     def get(self):
         # Returns as json in data variables
         return jsonify({'data': books})  
