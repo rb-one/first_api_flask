@@ -97,7 +97,28 @@
         $('#booksTable tr:last').after('<tr><td>' + book.isbn + '</td><td>' + book.title + '</td><td>' + book.author_id + '</td><td>' + book.genre_id + '</td></tr>');
     }
 
-  
+    $('#bookSave').click(function () {
+        var newBook = {
+            isbn: $('#bookIsbn').val(),
+            title: $('#bookTitle').val(),
+            author_id: $('#bookAuthorId').val(),
+            genre_id: $('#bookGenreId').val(),
+        }
+
+        $('#messages').first('p').text('Guardando libro...');
+        $('#messages').show();
+        $.ajax({
+            'url': 'http://127.0.0.1:5000/books',
+            'method': 'POST',
+            'data': JSON.stringify(newBook),
+            'success': function (data) {
+                console.log(data)
+
+                $('#messages').hide();
+                addBook(newBook);
+            }
+        });
+    });
 </script>
 
 </html>
